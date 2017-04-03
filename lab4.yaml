@@ -1,0 +1,11 @@
+- name: my lab04
+  hosts: target
+  tasks:
+  - name: ping all hosts
+    ping:
+  - name: yum task to install the package “fortune”
+    yum:
+     name: telnet, nano
+     state: latest
+    become: yes
+    become_method: sudo
