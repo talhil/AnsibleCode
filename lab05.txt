@@ -1,0 +1,48 @@
+- name: Rosencrantz
+  hosts: target
+  vars:
+   food: cowsay
+   food_state: present
+  tasks:
+  - name: debug module to display the OS distribution
+    debug:
+     msg: "System {{ inventory_hostname }} is {{ ansible_distribution }} "
+  - name: yum task to install the package cowsay
+    yum:
+     name: "{{ food }}"
+     state: "{{ food_state }}"
+    become: yes
+    become_method: sudo
+  - name: execute the command fortune
+    command: fortune
+    register: myout
+  - name: debug module to display the fortune command
+    debug:
+     msg: "debug {{ myout.stdout }}"
+- name: Guildenstern
+  hosts: target, localhost
+  tasks:
+  - name: add groups
+    group:
+     name: "{{ item }}"
+     state: present
+    become: yes
+    become_method: sudo
+    with_items:
+     - devs
+     - ops
+     - pms
+     - qa
+  - name: add users
+    become: yes
+    become_method: sudo
+    user:
+     name: "{{ item.name }}"
+     state: present
+     groups: "{{ item.groups }}"
+     shell: "{{ item.shell }}"
+    with_items:
+     - { name: 'tal01', groups: 'devs,qa', shell: '/bin/bash' }
+     - { name: 'tal02', groups: 'devs', shell: '/bin/bash' }
+     - { name: 'tal03', groups: 'qa', shell: '/bin/zsh' } 
+     
