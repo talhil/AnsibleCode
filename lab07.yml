@@ -1,0 +1,8 @@
+- name: tale of two cows
+  hosts: target
+  tasks:
+  - name: display remote machines OS distribution
+    debug:
+     msg: "System {{ inventory_hostname }} is {{ ansible_distribution }} "
+  - include: tasks/quotes.yml
+  - include: tasks/nomoo.yml

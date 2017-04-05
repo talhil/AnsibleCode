@@ -1,0 +1,6 @@
+- name: command/shell to execute fortune -s command
+  command: fortune -s
+  register: myout
+- name: debug module to display the fortune command
+  debug:
+   msg: "debug {{ myout.stdout }}"
